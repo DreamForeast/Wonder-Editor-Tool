@@ -2,16 +2,13 @@
   "name": "wonder-editor-tool",
   "version": "0.0.1",
   "authors": "DreamForest",
-  "description": "glsl compiler",
-  "homepage": "",
+  "description": "wonder editor tool",
+  "repository": "https://github.com/DreamForeast/Wonder-Editor-Tool",
   "license": "MIT",
-  "main": "./lib/js/src/create.js",
   "scripts": {
-    "start": "node ./server/app.js",
     "watch": "bsb -clean-world -make-world -w",
     "build": "bsb -clean-world -make-world",
     "test": "npm run build && jest --config jest.json",
-    "tt": "jest --config jest.json",
     "test:watch": "npm run build && jest --watch --config jest.json"
   },
   "devDependencies": {
