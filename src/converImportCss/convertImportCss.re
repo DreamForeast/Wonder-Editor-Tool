@@ -1,6 +1,6 @@
 open FsExtend;
 
-let shouldRemovePathArr = [|"libs", "es6_global"|];
+let shouldRemovePathArr = [|"lib", "es6_global"|];
 
 let _removeRedundancePath = (path) =>
   path |> Js.String.slice(~from=3, ~to_=path |> Js.String.length);

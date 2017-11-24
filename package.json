@@ -1,10 +1,11 @@
 {
   "name": "wonder-editor-tool",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": "DreamForest",
   "description": "wonder editor tool",
   "repository": "https://github.com/DreamForeast/Wonder-Editor-Tool",
   "license": "MIT",
+  "main": "./lib/js/src/convertImportCss.js",
   "scripts": {
     "watch": "bsb -clean-world -make-world -w",
     "build": "bsb -clean-world -make-world",
@@ -19,11 +20,11 @@
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
     "wonder-bs-jest": "^0.2.0",
-    "wonder-bs-sinon": "^0.1.0"
+    "wonder-bs-sinon": "^0.1.1"
   },
   "dependencies": {
     "bs-glob": "reasonml-community/bs-glob",
     "bs-node": "buckletypes/bs-node",
-    "wonder-commonlib": "^0.2.0"
+    "wonder-commonlib": "^0.2.8"
   }
 }

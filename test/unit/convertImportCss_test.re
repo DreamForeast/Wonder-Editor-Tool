@@ -13,7 +13,7 @@ let _ =
       test(
         "add private functions",
         () => {
-          let res = ConverImportCss.convert("./libs/es6_global/src");
+          let res = ConvertImportCss.convert("./libs/es6_global");
           /* expect(res) |> toEqual([||]) */
           expect(1) |> toEqual(1)
         }
