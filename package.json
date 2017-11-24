@@ -1,6 +1,6 @@
 {
   "name": "wonder-editor-tool",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "authors": "DreamForest",
   "description": "wonder editor tool",
   "repository": "https://github.com/DreamForeast/Wonder-Editor-Tool",
@@ -10,6 +10,7 @@
     "watch": "bsb -clean-world -make-world -w",
     "build": "bsb -clean-world -make-world",
     "test": "npm run build && jest --config jest.json",
+    "t": "jest --config jest.json",
     "test:watch": "npm run build && jest --watch --config jest.json"
   },
   "devDependencies": {

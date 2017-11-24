@@ -13,7 +13,7 @@ let _ =
       test(
         "add private functions",
         () => {
-          let res = ConvertImportCss.convert("./libs/es6_global");
+          let res = ChangeSnapShotPath.changeSnapShotPath("./ttt.js");
           /* expect(res) |> toEqual([||]) */
           expect(1) |> toEqual(1)
         }
