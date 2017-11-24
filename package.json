@@ -1,11 +1,11 @@
 {
   "name": "wonder-editor-tool",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "authors": "DreamForest",
   "description": "wonder editor tool",
   "repository": "https://github.com/DreamForeast/Wonder-Editor-Tool",
   "license": "MIT",
-  "main": "./lib/js/src/convertImportCss.js",
+  "main": "./index.js",
   "scripts": {
     "watch": "bsb -clean-world -make-world -w",
     "build": "bsb -clean-world -make-world",
