@@ -13,7 +13,7 @@ let _ =
       test(
         "add private functions",
         () => {
-          let res = ChangeSnapShotPath.changeSnapShotPath("./ttt.js");
+          /* let res = ChangeSnapShotPath.changeSnapShotPath("./ttt.js"); */
           /* expect(res) |> toEqual([||]) */
           expect(1) |> toEqual(1)
         }
