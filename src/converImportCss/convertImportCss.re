@@ -1,20 +1,9 @@
 open FsExtend;
 
-let shouldRemovePathArr = [|"lib", "es6_global"|];
-
 let _removeRedundancePath = (path) =>
   path |> Js.String.slice(~from=3, ~to_=path |> Js.String.length);
 
-let _getRelativePath = (filePath) =>
-  filePath
-  |> Js.String.split("/")
-  |> Js.Array.filter((pathSegment) => ! (shouldRemovePathArr |> Js.Array.includes(pathSegment)))
-  |> Js.Array.slice(~start=0, ~end_=(-1))
-  |> Js.Array.joinWith("/")
-  |> PathExtend.relative(filePath)
-  |> _removeRedundancePath;
-
-let changeImportCss = (relativePath, fileContent) => {
+let _changeImportCss = (relativePath, fileContent) => {
   let importCssRe = [%re {|/^importCss\s*\((\"|\')/g|}];
   let fileNameRe = [%re {|/[\"|\'](.*?)[\"|\']/g|}];
   let hasChangeFile = ref(false);
@@ -22,9 +11,9 @@ let changeImportCss = (relativePath, fileContent) => {
   |> Js.String.split("\n")
   |> Js.Array.reduce(
        (resultLine, line) =>
-         switch (importCssRe |> Js.Re.exec(line)) {
-         | None => resultLine ++ line ++ "\n"
-         | Some(result) =>
+         switch (importCssRe |> Js.Re.test(line)) {
+         | false => resultLine ++ line ++ "\n"
+         | true =>
            hasChangeFile := true;
            switch (fileNameRe |> Js.Re.exec(line)) {
            | None => resultLine
@@ -43,10 +32,19 @@ let changeImportCss = (relativePath, fileContent) => {
   |> ((resultFile) => (hasChangeFile, resultFile))
 };
 
-let parseSystem = (filePath) => {
-  let relativePath = filePath |> _getRelativePath;
+let _getRelativePath = (removePathArray, filePath) =>
+  filePath
+  |> Js.String.split("/")
+  |> Js.Array.filter((pathSegment) => ! (removePathArray |> Js.Array.includes(pathSegment)))
+  |> Js.Array.slice(~start=0, ~end_=(-1))
+  |> Js.Array.joinWith("/")
+  |> PathExtend.relative(filePath)
+  |> _removeRedundancePath;
+
+let _parseSystem = (removePathArray, filePath) => {
+  let relativePath = filePath |> _getRelativePath(removePathArray);
   Node.Fs.readFileSync(filePath, `utf8)
-  |> changeImportCss(relativePath)
+  |> _changeImportCss(relativePath)
   |> (
     ((hasChangeFile, resultFile)) =>
       if (hasChangeFile^) {
@@ -56,32 +54,46 @@ let parseSystem = (filePath) => {
   )
 };
 
-let rec convert = (filePath) =>
+let rec convertRecursion = (filePath, removePathArray) =>
   filePath
-  |> isFilePathExist
-  |> Node.Fs.readdirSync
-  |> Js.Array.forEach(
-       (fileName: string) => {
-         let fileDir = fileName |> PathExtend.join(filePath);
-         fileDir
-         |> statSync
-         |> (
-           (stats) =>
-             if (statsToJsObj(stats)##isFile()) {
+  |> Node.Fs.existsSync
+  |> (
+    (result) =>
+      switch result {
+      | false => ExcepetionHandleSystem.throwMessage({j|the $filePath should exist|j})
+      | true =>
+        filePath
+        |> Node.Fs.readdirSync
+        |> WonderCommonlib.ArraySystem.forEach(
+           [@bs]  (fileName: string) => {
+               let fileDir = fileName |> PathExtend.join(filePath);
                fileDir
-               |> PathExtend.parse
+               |> statSync
                |> (
-                 (pathObj) => {
-                   let ext = PathExtend.parseTojsObj(pathObj)##ext;
-                   switch ext {
-                   | ".js" => fileDir |> parseSystem
-                   | _ => ()
+                 (stats) =>
+                   if (statsToJsObj(stats)##isFile()) {
+                     fileDir
+                     |> PathExtend.parse
+                     |> (
+                       (pathObj) => {
+                         let ext = PathExtend.parseTojsObj(pathObj)##ext;
+                         switch ext {
+                         | ".js" => fileDir |> _parseSystem(removePathArray)
+                         | _ => ()
+                         }
+                       }
+                     )
+                   } else if (statsToJsObj(stats)##isDirectory()) {
+                     convertRecursion(fileName |> PathExtend.join(filePath), removePathArray)
                    }
-                 }
                )
-             } else if (statsToJsObj(stats)##isDirectory()) {
-               convert(fileName |> PathExtend.join(filePath))
              }
-         )
-       }
-     );
+           )
+      }
+  );
+
+let convert = (filePath, ~removePathArray=?) =>
+  switch removePathArray {
+  | None => [|"lib", "es6_global"|] |> convertRecursion(filePath)
+  | Some(value) => value |> convertRecursion(filePath)
+  };

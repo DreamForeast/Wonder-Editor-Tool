@@ -4,7 +4,7 @@ type stats;
 
 external statsToJsObj : stats => Js.t({..}) = "%identity";
 
-let isFilePathExist = (filePath) =>
+/* let isFilePathExist = (filePath) =>
   filePath
   |> Node.Fs.existsSync
   |> (
@@ -13,4 +13,4 @@ let isFilePathExist = (filePath) =>
       | false => ExcepetionHandleSystem.throwMessage({j|the $filePath is not exist|j})
       | true => filePath
       }
-  );
+  ); */
