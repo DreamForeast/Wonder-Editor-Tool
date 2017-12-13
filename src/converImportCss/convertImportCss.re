@@ -64,8 +64,8 @@ let rec convertRecursion = (filePath, removePathArray) =>
       | true =>
         filePath
         |> Node.Fs.readdirSync
-        |> WonderCommonlib.ArraySystem.forEach(
-           [@bs]  (fileName: string) => {
+        |> Js.Array.forEach(
+             (fileName: string) => {
                let fileDir = fileName |> PathExtend.join(filePath);
                fileDir
                |> statSync
