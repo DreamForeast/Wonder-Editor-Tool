@@ -1,3 +1,2 @@
-let importCss = (css: string) => {};
 
-importCss("./css/app.css");
+Css.importCss("./css/app.css");

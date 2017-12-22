@@ -15,7 +15,7 @@ let _ =
         |> Js.String.split("\n")
         |> Js.Array.map(
              (line) =>
-               switch ([%re {|/^import\s*([\"|\'](.*)[\"|\'])/g|}] |> Js.Re.exec(line)) {
+               switch ([%re {|/^.*import\s*([\"|\'](.*)[\"|\'])/g|}] |> Js.Re.exec(line)) {
                | None => ""
                | Some(result) =>
                  Js.Re.matches(result)[index];

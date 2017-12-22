@@ -1,6 +1,6 @@
 {
   "name": "wonder-editor-tool",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "authors": "DreamForest",
   "description": "wonder editor tool",
   "repository": "https://github.com/DreamForeast/Wonder-Editor-Tool",
@@ -21,7 +21,7 @@
     "jest": "21.2.1",
     "jest-cli": "21.2.1",
     "wonder-bs-jest": "latest",
-    "wonder-bs-sinon": "^0.1.1"
+    "wonder-bs-sinon": "^0.1.4"
   },
   "dependencies": {
     "bs-glob": "reasonml-community/bs-glob",

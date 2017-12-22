@@ -4,7 +4,7 @@ let _removeRedundancePath = (path) =>
   path |> Js.String.slice(~from=3, ~to_=path |> Js.String.length);
 
 let _changeImportCss = (relativePath, fileContent) => {
-  let importCssRe = [%re {|/^importCss\s*\((\"|\')/g|}];
+  let importCssRe = [%re {|/^.*importCss\s*\((\"|\')/g|}];
   let fileNameRe = [%re {|/[\"|\'](.*?)[\"|\']/g|}];
   let hasChangeFile = ref(false);
   fileContent
